@@ -28,7 +28,9 @@ session_start();
 		<input type="text" name="last_name" placeholder="Enter Last Name">
 		<input type="text" name="email" placeholder="Enter Email">
 		<input type="password" name="password" placeholder="Password">
+		<input type="password" name="confirm_password" placeholder="Confirm Password">
 		<input type="text" name="birthdate" placeholder="Enter Birthday MM/DD/YYYY">
+		<input type="file" name="file">
 		<input type="submit" value="Register">
 	</form>
 </body>
