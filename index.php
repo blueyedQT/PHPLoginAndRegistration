@@ -5,7 +5,7 @@ session_start();
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Validation</title>
+	<title>Registration</title>
 </head>
 <body>
 	<?php 
@@ -22,7 +22,7 @@ session_start();
 			<?php
 	}
 	?>
-	<form action="process.php" method="post">
+	<form action="process.php" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="action" value="register">
 		<input type="text" name="first_name" placeholder="Enter First Name">
 		<input type="text" name="last_name" placeholder="Enter Last Name">

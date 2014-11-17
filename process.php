@@ -55,27 +55,27 @@ function register($connection, $post)
 		}
 	}
 
-	// if($_FILES['file']['error'] > 0) 
-	// {
-	// 	$_SESSION['error']['file'] = "Error on file upload Return Code: " . $_FILES['file']['error'];
-	// }
-	// else 
-	// {
-	// 	$directory = 'uploads/';
-	// 	$file_name = $_FILES['file']['name'];
-	// 	$file_path = $directory . $file_name;
-	// 	if(file_exists($_file_path))
-	// 	{
-	// 		$_SESSION['error']['file'] = $file_name . ' already exists';
-	// 	}
-	// 	else
-	// 	{
-	// 		if(!move_uploaded_file($_FILES['file']['temp_name'], $file_path))
-	// 		{
-	// 			$_SESSION['error']['file'] = $file_name . " could not be saved";
-	// 		}
-	// 	}
-	// }
+	if($_FILES['file']['error'] > 0) 
+	{
+		$_SESSION['error']['file'] = "Error on file upload Return Code: " . $_FILES['file']['error'];
+	}
+	else 
+	{
+		$directory = 'uploads/';
+		$file_name = $_FILES['file']['name'];
+		$file_path = $directory . $file_name;
+		if(file_exists($file_path))
+		{
+			$_SESSION['error']['file'] = $file_name . ' already exists';
+		}
+		else
+		{
+			if(!move_uploaded_file($_FILES['file']['tmp_name'], $file_path))
+			{
+				$_SESSION['error']['file'] = $file_name . " could not be saved";
+			}
+		}
+	}
 
 	if(!isset($_SESSION['error']))
 	{
@@ -86,7 +86,7 @@ function register($connection, $post)
 
 		$f_birthdate = $birthdate[2].'-'.$birthdate[0].'-'.$birthdate[1];
 		$query = "INSERT INTO users (first_name, last_name, email, password, birthdate, file_path, created_at, updated_at) 
-				  VALUES ('".$post['first_name']."', '".$post['last_name']."', '".$post['email']."', '".$hash."', '".$f_birthdate."', 'file_path_variable', NOW(), NOW())";
+				  VALUES ('".$post['first_name']."', '".$post['last_name']."', '".$post['email']."', '".$hash."', '".$f_birthdate."', '".$file_path."', NOW(), NOW())";
 		mysqli_query($connection, $query);
 		
 		$user_id = mysqli_insert_id($connection);
