@@ -10,18 +10,14 @@ require_once('connection.php');
 </head>
 <body>
 	<div>
-		<?php
-		$query = "SELECT first_name, last_name, email, file_path, birthdate
+<?php	$query = "SELECT first_name, last_name, email, file_path, birthdate
 				  FROM users WHERE id=".$_GET['id'];
 		$result = mysqli_query($connection, $query);
 		$row = mysqli_fetch_assoc($result);
-		if(isset($_SESSION['user_id']) && $_SESSION['user_id'] == $_GET['id'])
-		{
-			?>
+		if(isset($_SESSION['user_id']) && $_SESSION['user_id'] == $_GET['id']) { ?>
 			<p>Welcome <?= $row['first_name'].' '.$row['last_name'] ?> <a href="process.php?logout=1" ?>Logout</a></p>
-			<?php
-		}
-		?>
+<?php
+		} ?>
 		<img src="<?=$row['file_path']?>">
 		<h1><?= $row['first_name']. ' '. $row['last_name'] ?></h1>
 		<h2><?= $row['email'] ?></h2>

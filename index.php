@@ -8,20 +8,17 @@ session_start();
 	<title>Registration</title>
 </head>
 <body>
-	<?php 
+<?php 
 	if(isset($_SESSION['error'])) {
 		foreach($_SESSION['error'] as $name => $message) {
 			?>
 			<p><?=$message ?></p>
 			<?php
 		}
-	} elseif(isset($_SESSION['sucess_message']))
-	{
-		?>
+	} elseif(isset($_SESSION['sucess_message'])) { ?>
 			<p><?=$_SESSION['sucess_message'] ?></p>
-			<?php
-	}
-	?>
+<?php
+	} ?>
 	<form action="process.php" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="action" value="register">
 		<input type="text" name="first_name" placeholder="Enter First Name">

@@ -2,52 +2,42 @@
 session_start();
 require_once('connection.php');
 
-function logout()
-{
+function logout() {
 	$_SESSION = array();
 	session_destroy();
 }
 
-function register($connection, $post)
-{
-	foreach ($post as $name => $value) 
-	{
-		if(empty($value))
-		{
+function register($connection, $post) {
+	foreach ($post as $name => $value) {
+		if(empty($value)) {
 			$_SESSION['error'][$name] = "sorry, " . $name . " cannot be blank.";
-		}
-		else {
+		} else {
 			switch ($name) {
 				case 'first_name':
 				case 'last_name':
-					if(is_numeric($value))
-					{
+					if(is_numeric($value)) {
 						$_SESSION['error'][$name] = $name . ' cannot contain numbers!';
 					}
 				break;
 				case 'email':
-					if(!filter_var($value, FILTER_VALIDATE_EMAIL)) 
-					{
+					if(!filter_var($value, FILTER_VALIDATE_EMAIL)) {
 						$_SESSION['error'][$name] = $name . " is not a valid email!";
 					}
 				break;
 				case 'password':
 					$password = $value;
-					if(strlen($value) < 5) 
-					{
+					if(strlen($value) < 5) {
 						$_SESSION['error'][$name] = $name . ' must be greater than 5 characters.';
 					}
 				break;
 				case 'confirm_password':
-					if($password != $value) 
-					{
+					if($password != $value) {
 						$_SESSION['error'][$name] = $name . 'Passwords do not match';
 					}
 				break;
 				case 'birthdate':
 					$birthdate = explode('/', $value);
-					if(!checkdate($birthdate[0], $birthdate[1], $birthdate[2])) 
-					{
+					if(!checkdate($birthdate[0], $birthdate[1], $birthdate[2])) {
 						$_SESSION['error'][$name] = $name . ' is not a valid date!';
 					}
 				break;
@@ -55,30 +45,23 @@ function register($connection, $post)
 		}
 	}
 
-	if($_FILES['file']['error'] > 0) 
-	{
+	if($_FILES['file']['error'] > 0) {
 		$_SESSION['error']['file'] = "Error on file upload Return Code: " . $_FILES['file']['error'];
 	}
-	else 
-	{
+	else {
 		$directory = 'uploads/';
 		$file_name = $_FILES['file']['name'];
 		$file_path = $directory . $file_name;
-		if(file_exists($file_path))
-		{
+		if(file_exists($file_path)) {
 			$_SESSION['error']['file'] = $file_name . ' already exists';
-		}
-		else
-		{
-			if(!move_uploaded_file($_FILES['file']['tmp_name'], $file_path))
-			{
+		} else {
+			if(!move_uploaded_file($_FILES['file']['tmp_name'], $file_path)) {
 				$_SESSION['error']['file'] = $file_name . " could not be saved";
 			}
 		}
 	}
 
-	if(!isset($_SESSION['error']))
-	{
+	if(!isset($_SESSION['error'])) {
 		$_SESSION['sucess_message'] = "Congratulations you are now a member!";
 
 		$salt = bin2hex(openssl_random_pseudo_bytes(22));
@@ -96,33 +79,24 @@ function register($connection, $post)
 		exit;
 	}
 }
-function login($connection, $post)
-{
-	if(empty($post['email']) || empty($post['password']))
-	{
+
+function login($connection, $post) {
+	if(empty($post['email']) || empty($post['password'])) {
 		$_SESSION['error']['message'] = "Email or password cannot be blank!";
-	}
-	else
-	{
+	} else {
 		$query = "SELECT id, password FROM users WHERE email = '".$post['email']."'";
 		$result = mysqli_query($connection, $query);
 		$row = mysqli_fetch_assoc($result);
 
-		if(empty($row))
-		{
+		if(empty($row)) {
 			$_SESSION['error']['message'] = 'Could not find email in database';
-		}
-		else
-		{
-			if(crypt($post['password'], $row['password']) != $row['password'])
-			{
+		} else {
+			if(crypt($post['password'], $row['password']) != $row['password']) {
 				$_SESSON['error']['message'] = 'Incorrect password';
-			}
-			else {
+			} else {
 				$_SESSION['user_id'] = $row['id'];
 				header('location: profile.php?id='.$row['id']);
 				exit;
-
 			}
 		}
 	}
@@ -131,19 +105,13 @@ function login($connection, $post)
 }
 
 
-if(isset($_POST['action']) && $_POST['action'] == 'register')
-{
+if(isset($_POST['action']) && $_POST['action'] == 'register') {
 	register($connection, $_POST);
-}
-elseif (isset($_POST['action']) && $_POST['action'] == 'login')
-{
+} elseif (isset($_POST['action']) && $_POST['action'] == 'login') {
 	login($connection, $_POST);
-}
-elseif (isset($_GET['logout']))
-{
+} elseif (isset($_GET['logout'])) {
 	logout();
 }
 
 header('location: index.php');
-
 ?>
