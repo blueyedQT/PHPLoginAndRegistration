@@ -8,6 +8,7 @@ session_start();
 	<title>Login</title>
 </head>
 <body>
+<h1>Welcome - Login</h1>
 <?php
 	if(isset($_SESSION['error'])) { ?>
 		<p><?= $_SESSION['error']['message'] ?></p>

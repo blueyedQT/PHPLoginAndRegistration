@@ -18,6 +18,7 @@ require_once('connection.php');
 			<p>Welcome <?= $row['first_name'].' '.$row['last_name'] ?> <a href="process.php?logout=1" ?>Logout</a></p>
 <?php
 		} ?>
+		<h1>Profile</h1>
 		<img src="<?=$row['file_path']?>">
 		<h1><?= $row['first_name']. ' '. $row['last_name'] ?></h1>
 		<h2><?= $row['email'] ?></h2>

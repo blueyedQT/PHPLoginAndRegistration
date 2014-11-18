@@ -8,6 +8,7 @@ session_start();
 	<title>Registration</title>
 </head>
 <body>
+	<h1>Welcome - Registration</h1>
 <?php 
 	if(isset($_SESSION['error'])) {
 		foreach($_SESSION['error'] as $name => $message) {
